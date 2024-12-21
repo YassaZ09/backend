@@ -14,11 +14,12 @@ public class LaborerController {
     @Autowired
     private LaborerService laborerService;
 
-    // Register a laborer
     @PostMapping("/register")
     public User registerLaborer(@RequestBody User user, @RequestParam String jobCategory) {
+        // Ensure required fields like nicOrPassport and attendingJobs are validated here
         return laborerService.registerLaborer(user, jobCategory);
     }
+
 
     // Get all laborers by category
     @GetMapping("/category")

@@ -14,21 +14,35 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @PostMapping("/users")
+    public User createUser(@RequestBody User user) {
+        // Validate fields like nicOrPassport, guardian, etc.
+        return adminService.createUser(user);
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable String id, @RequestBody User user) {
+        // Validate and update new fields as needed
+        return adminService.updateUser(id, user);
+    }
+
+
+
     // User Management
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return adminService.getAllUsers();
     }
 
-    @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
-        return adminService.createUser(user);
-    }
-
-    @PutMapping("/users/{id}")
-    public User updateUser(@PathVariable String id, @RequestBody User user) {
-        return adminService.updateUser(id, user);
-    }
+//    @PostMapping("/users")
+//    public User createUser(@RequestBody User user) {
+//        return adminService.createUser(user);
+//    }
+//
+//    @PutMapping("/users/{id}")
+//    public User updateUser(@PathVariable String id, @RequestBody User user) {
+//        return adminService.updateUser(id, user);
+//    }
 
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable String id) {

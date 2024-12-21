@@ -21,5 +21,5 @@ public class Job {
     private String status; // "PENDING", "ASSIGNED", "COMPLETED"
     private double price; // Job price
     private String scheduledTime; // Scheduled time for the job
-    // Getters and Setters
+
 }

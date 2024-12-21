@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @Data
 @Document(collection = "job_categories")
+
 public class JobCategory {
     @Id
     private String id;

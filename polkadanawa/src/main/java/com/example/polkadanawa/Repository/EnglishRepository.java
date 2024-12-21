@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface EnglishRepository extends MongoRepository<English, String> {
     List<English> findByTopic(String topic);
-    English findByKey(String key);
+
 }

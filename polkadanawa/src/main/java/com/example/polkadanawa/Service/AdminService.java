@@ -1,3 +1,4 @@
+
 package com.example.polkadanawa.Service;
 
 import com.example.polkadanawa.Model.*;
@@ -39,11 +40,22 @@ public class AdminService {
     }
 
     public User updateUser(String id, User user) {
-        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        existingUser.setName(user.getName());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setPhone(user.getPhone());
-        existingUser.setRole(user.getRole());
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Update fields based on the User model
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setSecondName(user.getSecondName());
+        existingUser.setFullNameWithInitials(user.getFullNameWithInitials());
+        existingUser.setPrimaryPhone(user.getPrimaryPhone());
+        existingUser.setSecondaryPhone(user.getSecondaryPhone());
+        existingUser.setDrivingLicenseNo(user.getDrivingLicenseNo());
+        existingUser.setAttendingJobs(user.getAttendingJobs());
+        existingUser.setAttendingLocations(user.getAttendingLocations());
+        existingUser.setFine(user.getFine());
+        existingUser.setGuardian(user.getGuardian());
+        existingUser.setTermsAccepted(user.isTermsAccepted());
+
         return userRepository.save(existingUser);
     }
 
@@ -57,14 +69,10 @@ public class AdminService {
     }
 
     public JobCategory createJobCategory(JobCategory jobCategory) {
-        // Save Job Category in the main collection
         JobCategory savedCategory = jobCategoryRepository.save(jobCategory);
-
-        // Generate a dynamic table (collection) name
         String dynamicTableName = "job_category_" + savedCategory.getName().toLowerCase().replace(" ", "_");
         savedCategory.setTableName(dynamicTableName);
 
-        // Create the dynamic collection in MongoDB
         if (!mongoTemplate.collectionExists(dynamicTableName)) {
             mongoTemplate.createCollection(dynamicTableName);
         }
@@ -84,7 +92,6 @@ public class AdminService {
         JobCategory category = jobCategoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        // Drop the dynamic collection if it exists
         if (mongoTemplate.collectionExists(category.getTableName())) {
             mongoTemplate.dropCollection(category.getTableName());
         }
@@ -98,21 +105,16 @@ public class AdminService {
     }
 
     public Job createJob(Job job, String categoryId) {
-        // Ensure the category exists
         JobCategory category = jobCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        // Set the category ID
         job.setCategoryId(category.getId());
         return jobRepository.save(job);
     }
 
     public List<Object> getJobsByCategory(String categoryId) {
-        // Ensure the category exists
         JobCategory category = jobCategoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        // Fetch jobs from the category's dynamic table
         return mongoTemplate.findAll(Object.class, category.getTableName());
     }
 

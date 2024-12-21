@@ -18,5 +18,4 @@ public class Review {
     private int rating; // 1 to 5 stars
     private String comments;
     private String reviewDate;
-    // Getters and Setters
 }

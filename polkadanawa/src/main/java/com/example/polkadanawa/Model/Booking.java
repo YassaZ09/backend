@@ -19,5 +19,4 @@ public class Booking {
     private String bookingDate;
     private String date;
     private String status; // "CONFIRMED", "CANCELLED", "COMPLETED"
-    // Getters and Setters
 }
