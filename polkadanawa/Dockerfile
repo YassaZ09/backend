@@ -1,11 +1,8 @@
-FROM amazoncorretto:17
+FROM maven:3.8.5-openjdk-17 AS build
+COPY . .
+RUN mvn clean package -DskipTests
 
-LABEL version="1.0"
-
-EXPOSE 8080:8080
-
-WORKDIR /app
-
-COPY target/polkadanawa-0.0.1-SNAPSHOT.jar /app/polkadanawa.jar
-
-ENTRYPOINT ["java", "-jar", "polkadanawa.jar"]
+FROM openjdk:17.0.1-jdk-slim
+COPY --from=build /target/polkadanawa-0.0.1-SNAPSHOT.jar demo.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","demo.jar"]
