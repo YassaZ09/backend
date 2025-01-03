@@ -7,6 +7,7 @@ import com.example.polkadanawa.Service.TranslationService;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/translations")
 public class TranslationController {
